@@ -1,0 +1,104 @@
+  
+
+  body{
+
+      max-width:1050px;
+      line-height:1.6;
+      font-size:18px;
+      margin:100px auto;
+      font-family: 'Montserrat';
+      color:#444;
+      padding:0 10px
+}
+
+
+
+    h1,h2,h3{
+      line-height:1.4;
+      font-size: 2em;
+      font-family: 'Montserrat';
+}
+
+   header {
+    height:100px;
+    background:#F0F0F0;
+    width:100%;
+    margin:0px 0px 0px 0px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+    
+
+    .container {
+      padding: 40px 20px 20px 30px;
+      /* commented out to see what it looks like
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      transition: all 0.2s ease-in-out;
+      z-index: 1;
+      */
+}
+
+
+
+#justified-text {
+padding: 5px 0 0 20px;
+font-size: 1.4em;
+}
+
+
+/* 
+
+Colors for specific links 
+
+Yes, avoiding code repetition is best practice but im too tired to think about this atm
+@todo refactor this
+
+*/
+
+
+
+#colab {
+  color: #FF5722;
+  text-decoration: none;
+}
+
+#aut {
+  color: #009688;
+  text-decoration: none;
+}
+
+a:hover {
+  background-color:#CCFFCC;
+}
+
+#behance {
+  color: #0D47A1;
+  text-decoration: none;
+}
+
+#github { 
+  color: #673AB7;
+  text-decoration: none;
+}
+
+#twitter {
+  color: #03A9F4;
+  text-decoration: none;
+}
+
+#tumblr {
+  color: #3F51B5;
+  text-decoration: none;
+}
+
+#linkedin {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+#pgp {
+  color: #E91E63;
+  text-decoration: none;
+}
