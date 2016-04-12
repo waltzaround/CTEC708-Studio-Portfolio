@@ -42,6 +42,10 @@
 
 
 
+#pseudofooter {
+  font-size: 0.5em;
+}
+
 #justified-text {
 padding: 5px 0 0 20px;
 font-size: 1.4em;
