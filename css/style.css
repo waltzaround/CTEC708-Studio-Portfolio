@@ -25,7 +25,7 @@
     width:100%;
     margin:0px 0px 0px 0px;
     position: fixed;
-    top: 0px;
+    bottom: 0px;
     left: 0px;
       box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
@@ -44,10 +44,11 @@
 
 #pseudofooter {
   font-size: 0.5em;
+  float: right;
 }
 
 #justified-text {
-padding: 5px 0 0 20px;
+padding: 3px 0 0 20px;
 font-size: 1.4em;
 }
 
@@ -65,6 +66,11 @@ Yes, avoiding code repetition is best practice but im too tired to think about t
 
 #colab {
   color: #FF5722;
+  text-decoration: none;
+}
+
+#stefan {
+  color: red;
   text-decoration: none;
 }
 
