@@ -1,5 +1,10 @@
   
 
+html{
+width: 100%;
+            height: 100%;
+}
+
   body{
 
       max-width:1050px;
@@ -7,9 +12,19 @@
       font-size:18px;
       margin:100px auto;
       font-family: 'Montserrat';
-      color:#444;
-      padding:0 10px
-}
+      color: #ffffff;
+      padding:0 10px;
+      background: linear-gradient(231deg, #ac19c7, #114cbc);
+      background-size: 400% 400%;
+      -webkit-animation: AnimationName 29s ease infinite;
+      -moz-animation: AnimationName 29s ease infinite;
+      -o-animation: AnimationName 29s ease infinite;
+      animation: AnimationName 29s ease infinite;
+       display: flex;
+            justify-content: center;
+            align-items: center;
+
+      }
 
 
 
@@ -45,6 +60,7 @@
 #pseudofooter {
   font-size: 0.5em;
   float: right;
+  color: #fafafa;
 }
 
 #justified-text {
@@ -53,62 +69,96 @@ font-size: 1.4em;
 }
 
 
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 57%}
+    50%{background-position:100% 44%}
+    100%{background-position:0% 57%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 57%}
+    50%{background-position:100% 44%}
+    100%{background-position:0% 57%}
+}
+@-o-keyframes AnimationName {
+    0%{background-position:0% 57%}
+    50%{background-position:100% 44%}
+    100%{background-position:0% 57%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 57%}
+    50%{background-position:100% 44%}
+    100%{background-position:0% 57%}
+}
+
 /* 
 
 Colors for specific links 
 
 Yes, avoiding code repetition is best practice but im too tired to think about this atm
-@todo refactor this
 
 */
 
 
 
 #colab {
-  color: #FF5722;
+  color: #EF9A9A;
   text-decoration: none;
 }
 
 #stefan {
-  color: red;
+  color: #F48FB1;
   text-decoration: none;
 }
 
 #aut {
-  color: #009688;
+  color: #BBDEFB;
   text-decoration: none;
 }
 
+
 a:hover {
-  background-color:#CCFFCC;
+  background-color:#311B92;
+
 }
 
 #behance {
-  color: #0D47A1;
+  color: #EDE7F6;
   text-decoration: none;
 }
 
 #github { 
-  color: #673AB7;
+  color: #9FA8DA;
   text-decoration: none;
 }
 
 #twitter {
-  color: #03A9F4;
+  color: #90CAF9;
   text-decoration: none;
 }
 
 #tumblr {
-  color: #3F51B5;
+  color: #81D4FA;
   text-decoration: none;
 }
 
 #linkedin {
-  color: #4CAF50;
+  color: #80DEEA;
   text-decoration: none;
 }
 
 #pgp {
-  color: #E91E63;
+  color: #80CBC4;
   text-decoration: none;
+}
+
+#wcag {
+  color: #E1F5FE;
+  text-decoration: none;
+}
+
+@media only screen and (max-width: 500px) {
+    body {
+        margin: 1px auto;
+        font-size:10px;
+    }
 }
