@@ -20,9 +20,7 @@ width: 100%;
       -moz-animation: AnimationName 29s ease infinite;
       -o-animation: AnimationName 29s ease infinite;
       animation: AnimationName 29s ease infinite;
-       display: flex;
-            justify-content: center;
-            align-items: center;
+
 
       }
 
@@ -160,5 +158,6 @@ a:hover {
     body {
         margin: 1px auto;
         font-size:10px;
+        line-height:1.8;
     }
 }
