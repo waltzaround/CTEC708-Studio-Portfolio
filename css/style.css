@@ -66,28 +66,6 @@ padding: 3px 0 0 20px;
 font-size: 1.4em;
 }
 
-
-@-webkit-keyframes AnimationName {
-    0%{background-position:0% 57%}
-    50%{background-position:100% 44%}
-    100%{background-position:0% 57%}
-}
-@-moz-keyframes AnimationName {
-    0%{background-position:0% 57%}
-    50%{background-position:100% 44%}
-    100%{background-position:0% 57%}
-}
-@-o-keyframes AnimationName {
-    0%{background-position:0% 57%}
-    50%{background-position:100% 44%}
-    100%{background-position:0% 57%}
-}
-@keyframes AnimationName {
-    0%{background-position:0% 57%}
-    50%{background-position:100% 44%}
-    100%{background-position:0% 57%}
-}
-
 /* 
 
 Colors for specific links 
@@ -161,3 +139,4 @@ a:hover {
         line-height:1.8;
     }
 }
+
