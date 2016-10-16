@@ -1672,7 +1672,7 @@
 
 	body, input, select, textarea {
 		font-family: Rubik, sans-serif;
-		font-weight: normal;
+		font-weight: 300;
 		line-height: 1.5em;
 		letter-spacing: -0.015em;
 	}
@@ -1905,7 +1905,7 @@
 		border: 0;
 		cursor: pointer;
 		display: inline-block;
-		font-weight: bold;
+		font-weight: 500;
 		height: 2.85em;
 		line-height: 2.95em;
 		padding: 0 1.75em;
@@ -3628,7 +3628,7 @@
 
 	#header {
 		background-color: #4696e5;
-		color: #d0e4f8;
+		color: #FFFFFF;
 		padding: 4.5em 0 2.5em 0 ;
 		-moz-align-items: center;
 		-webkit-align-items: center;
@@ -3842,7 +3842,7 @@
 
 		#header h1 {
 			font-size: 3.25em;
-			font-weight: bold;
+			font-weight: 500;
 			margin-bottom: 0.5em;
 		}
 
