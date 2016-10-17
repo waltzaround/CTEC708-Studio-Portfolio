@@ -1,0 +1,24 @@
+{
+  "name": "dataset_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WeAreFlat/Datasets_Backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WeAreFlat/Datasets_Backend/issues"
+  },
+  "homepage": "https://github.com/WeAreFlat/Datasets_Backend#readme",
+  "dependencies": {
+    "formidable": "^1.0.17",
+    "js-info-bubble": "^0.8.0",
+    "xhr2": "^0.1.3"
+  }
+}

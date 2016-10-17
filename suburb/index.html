@@ -1,0 +1,142 @@
+<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Flattie</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <script src="js/infobubble.js"></script>
+    <script src="https://use.typekit.net/xsk7lac.js"></script>
+    <script>
+        try {
+            Typekit.load({
+                async: true
+            });
+        } catch (e) {
+        }
+    </script>
+
+    <style>
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+
+        /*Matt's not semipermanent styles*/
+        .tooltip {
+            margin: 0;
+            height: 55px;
+            width: 140px;
+            line-height: 18px;
+
+        }
+
+        .tooltip br {
+            display: block;
+            /*margin: -50px 0;*/
+        }
+
+        .tooltip p {
+            text-align: center;
+            font-size: 15px;
+        }
+
+        #colouredPrice {
+            color: #B2FF59;
+            margin: -28px 0;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+<div class="overlay"></div>
+    <a href="about/index.html"><img src="img/info.svg" id="about"></a>
+<div class="modal startScreen">
+    <div class="homePosition">
+        <div class="mainTitle">Find your place in
+            <br> Auckland with Flattie.
+        </div>
+        <div class="mainDescription">Click on a suburb to learn more.
+            <br>Lighter colored suburbs are cheaper to rent.
+        </div>
+        <button class="buttonStyle titleButtonPosition dropShadow" id="start">Get Started</button>
+    </div>
+</div>
+
+
+<div class="modal stats">
+    <button class="buttonStyle closeBtn dropShadow" id="close">close</button>
+    <div class="mainTitle queryTitlePosition listingHeadingMargin" id="suburbName">Suburb</div>
+
+    <div class="suburbMainInfo">
+        <img src="img/cash_hand.svg" class="statIcon">
+        <div id="mbiePrice">$000</div>
+        <div>Average Asking Price Per Room</div>
+    </div>
+    <div class="availableFlats">
+        <div class="suburbMainInfo">
+            <img src="img/two_people_house.svg" class="statIcon">
+            <div id="flatmatesCount">00</div>
+            <div>Available Rooms</div>
+        </div>
+        <a id="flatmatesLink" href="#" class="button" target="_blank">
+            <button class="buttonStyle tmButton  dropShadow">Flats on Trade Me</button>
+        </a>
+    </div>
+    <div class="availableRentals">
+        <div class="suburbMainInfo">
+            <img src="img/person_house.svg" class="statIcon">
+            <div id="rentCount">00</div>
+            <div>Available Rentals</div>
+        </div>
+        <a id="rentLink" href="#" class="button" target="_blank">
+            <button class="buttonStyle tmButton  dropShadow">Rentals on Trade Me</button>
+        </a>
+    </div>
+</div>
+
+
+<div class="scale">
+    <p>Average rent per room (July 2016)</p>
+    <div id="gradScale">
+        <div class="scaleLine">
+            <p>$140</p>
+        </div>
+        <div class="scaleLine">
+            <p>$380</p>
+        </div>
+        <div class="scaleLine">
+            <p>$260</p>
+        </div>
+    </div>
+</div>
+
+<div id="map"></div>
+<script src="js/script.js" defer></script>
+
+<script src="js/main.js"></script>
+</body>
+
+</html>
