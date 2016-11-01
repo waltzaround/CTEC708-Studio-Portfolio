@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+  <title>New Tab</title>
+  <script async="" src="./New Tab_files/analytics.js"></script><script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/js/const.global.js"></script>
+  <script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/js/const.js"></script>
+  <script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/js/tracker.js"></script>
+  <script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/js/bootstrap.js"></script>
+  <script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/mixpanel.js"></script>
+  <script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/mixpanel-2-latest.js"></script>
+
+  <meta http-equiv="Cache-control" content="public">
+
+  <link rel="stylesheet" href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/stylesheets/muzli.css">
+</head>
+<body style="" ng-app="muzli" ng-keyup="bodyKeyUp($event)" ng-keydown="bodyKeyDown($event)" ng-class="{ bootstrapped: bootstrapped, dark: theme === &#39;dark&#39;, menuOpen: menuOpen &amp;&amp; !vm.showSignInDialog &amp;&amp; !vm.showSignInDialogReLogin &amp;&amp; !vm.showSignInDialogReLoginWithoutScratch &amp;&amp; !vm.showPromoSignInDialog &amp;&amp; !vm.showThanksYouSignInDialog, uninstallOpen: uninstall, overlay: vm.showWelcome || vm.showSignInDialog || vm.showSignInDialogReLogin || vm.showSignInDialogReLoginWithoutScratch || vm.showPromoSignInDialog || vm.showThanksYouSignInDialog }" class="dark feed-all bootstrapped loading-muzli-complete" ng-strict-di="">
+<div id="overlay"></div>
+<!-- Main wrapper -->
+<div id="container">
+  <a id="menuOpener" class="menu" href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-click="::openMenu()"></a>
+  <!-- <a id="linkSuggestButton"  class="linkSuggestButton" href="#" title="Suggest a link" ng-click="::shareMuzliLink.toggleVisibility()"></a> -->
+  <!-- ngIf: shareMuzliLink.visible -->
+
+  <a class="userIcon" href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-show="user" ng-click="clickUser()"><img class="avatar" alt="" ng-src="http://pbs.twimg.com/profile_images/786484825762914304/h53E9c3__normal.jpg" src="./New Tab_files/h53E9c3__normal.jpg"><i>0</i>
+  </a>
+
+  <div id="quickLinks" ng-show="isQuickLinks" class="noscroll ng-hide" ng-mouseenter="::quickLinksEnter()" style="overflow-y: hidden;" ng-class="{ &#39;open&#39;: quickLinks.focusSiteAddName || quickLinks.focusSiteAddUrl }">
+    <!-- ngIf: isQuickLinks -->
+  </div>
+
+  <!-- Main content -->
+  <main>
+    <section id="quickAccess" class="max visible min" ng-class="{
+        &#39;min&#39;: showEnableAuthRecentSites === false &amp;&amp; !recentSites,
+        &#39;max&#39;: showEnableAuthRecentSites || recentSited,
+        visible : !isSwitchedToHalfView &amp;&amp; feedVisibleClass !== &#39;halfView&#39;,
+        minimized: ([&#39;loading-complete&#39;, &#39;loading-scrolled&#39;].indexOf(initialLoading) &gt; -1 || isSwitchedToHalfView)
+    }">
+      <div class="search">
+        <form ng-submit="search(searchText, $event)" id="searchForm" class="ng-pristine ng-valid ng-valid-maxlength">
+          <div class="input">
+            <input tabindex="1" maxlength="50" type="text" ng-model="searchText" id="searchBox" muzli-placeholder="" name="q" class="ui-autocomplete-input ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength" autocomplete="off" placeholder="Search Google or type URL">
+            <div class="searchOptions">
+              <a href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-class="{ default: defaultSearch === &#39;muzli&#39;, active: activeSearch === &#39;muzli&#39; }" class="muzli" title="" ng-click="search(searchText, $event, &#39;muzli&#39;)"></a>
+              <a href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-class="{ default: defaultSearch === &#39;google&#39;, active: activeSearch === &#39;google&#39; }" class="google default active" title="" ng-click="search(searchText, $event, &#39;google&#39;)"></a>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="mostVisitedContainer">
+        <!-- <a href="#">Enable quick access to your most visited websites</a> -->
+        <!-- ngIf: showEnableAuthRecentSites -->
+
+        <!-- ngIf: recentSites.length -->
+      </div>
+
+    </section>
+
+    <header>
+      <!-- ngIf: ['all', 'all-muzli', 'home', 'home-muzli'].indexOf(currentSource) > -1 --><h1 ng-if="[&#39;all&#39;, &#39;all-muzli&#39;, &#39;home&#39;, &#39;home-muzli&#39;].indexOf(currentSource) &gt; -1">From our picks <a href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" class="more" ui-sref="feed"></a></h1><!-- end ngIf: ['all', 'all-muzli', 'home', 'home-muzli'].indexOf(currentSource) > -1 -->
+      <!--<h1 ng-cloak ng-if="currentSource === 'sources'">All Your Feeds</h1>-->
+      <!--<h1 class="resultsHeading" ng-cloak ng-if="currentSource === 'search'">Search results from <span class="s-picks" ng-class="{ active: searchFilters.sources.muzli}" ng-click="toggleSearchSource('muzli')">Muzli Picks</span><span class="s-dribbble" ng-class="{ active: searchFilters.sources.dribbble}" ng-click="toggleSearchSource('dribbble')">Dribbble</span></h1>-->
+      <!-- ngIf: currentSource === 'search' -->
+      <!-- ngIf: currentSource === 'favorites' -->
+      <!-- ngIf: currentSource.name -->
+
+      <!-- ngIf: ['search', 'favorites'].indexOf(currentSource) === -1 && ['vlogs', 'dribbble', 'producthunt'].indexOf(currentSource.name) === -1 --><div class="feedSorters" ng-if="[&#39;search&#39;, &#39;favorites&#39;].indexOf(currentSource) === -1 &amp;&amp; [&#39;vlogs&#39;, &#39;dribbble&#39;, &#39;producthunt&#39;].indexOf(currentSource.name) === -1">
+        <a ng-click="sortFeed(&#39;hot&#39;)" class="hot" ng-class="{ active: currentFeedSort === &#39;hot&#39; }" href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" title=""></a>
+        <a ng-click="sortFeed()" class="latest active" ng-class="{ active: !currentFeedSort }" href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" title=""></a>
+      </div><!-- end ngIf: ['search', 'favorites'].indexOf(currentSource) === -1 && ['vlogs', 'dribbble', 'producthunt'].indexOf(currentSource.name) === -1 -->
+    </header>
+
+    <!-- uiView:  --><div ui-view=""><section id="sticky" ng-hide="errors.indexOf(&#39;muzli-error&#39;) &gt; -1" class=""><!-- Sticky posts -->
+  <!-- ngIf: muzliFeed.length --><ul ng-if="muzliFeed.length">
+    <!-- ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="55ff947266accbf3c031b00706d41518">
+      <a target="_blank" href="http://app.muz.li/go?link=http%3A%2F%2Fwww.nintendo.com%2Fswitch&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20201607/gallery02.jpg" src="./New Tab_files/gallery02.jpg" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20201607/gallery02.jpg" style="display: inline;"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Nintendo Switch™ - Official Site - Nintendo's New Video Game System</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">nintendo.com</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="9ca76e27d76d1758f0fc03211cc865b5">
+      <a target="_blank" href="http://app.muz.li/go?link=https%3A%2F%2Fmedium.muz.li%2F40-inspiring-examples-of-mobile-feeds-9dcc9f5c47c3%23.5tt5iwpbc&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20151934/Screenshot-at-Oct-20-15-02-37.jpg" src="./New Tab_files/Screenshot-at-Oct-20-15-02-37.jpg" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20151934/Screenshot-at-Oct-20-15-02-37.jpg" style="display: inline;"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>40 Inspiring examples of mobile feeds</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">medium.muz.li</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="7aed5b405a051d892f2e65f8582dbed9" class="video">
+      <a target="_blank" href="http://app.muz.li/go?link=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D-bh1MHuA5jU&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video --><muzli-video ng-if="::item.video" thumbnail="::item.thumbnail" video-url="::item.video" video-id="::item.videoId"><div ng-click="::imageClicked()" ng-class="{ thumbnail: showThumbnail }" class="angular-youtube-wrapper thumbnail"><!-- ngIf: showThumbnail && thumbnail --><img ng-if="showThumbnail &amp;&amp; thumbnail" src="./New Tab_files/mqdefault.jpg" lazy="http://img.youtube.com/vi/-bh1MHuA5jU/mqdefault.jpg" data-original="http://img.youtube.com/vi/-bh1MHuA5jU/mqdefault.jpg" style="display: inline;"><!-- end ngIf: showThumbnail && thumbnail --><!-- ngIf: !showThumbnail --></div></muzli-video><!-- end ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>&#8234;Dynamic projection mapping onto deforming non-rigid surface&#8236;&#8207;</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">youtube.com</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="d67450faafe442881ac3c6e9e0d45a27">
+      <a target="_blank" href="http://app.muz.li/go?link=http%3A%2F%2Fluyu.co%2Fwork%2Fpositive-words%2F&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20181007/05.jpg" src="./New Tab_files/05.jpg" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20181007/05.jpg" style="display: inline;"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Lu Yu › POSITIVE WORDS</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">luyu.co</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="4099ffe86e9a7109f73dc25dc6767283">
+      <a target="_blank" href="http://app.muz.li/go?link=http%3A%2F%2Fdigitalsynopsis.com%2Fdesign%2Fcreative-movie-posters-film-art-peter-majarich%2F&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20145316/creative-movie-posters-film-art-peter-majarich-10.jpg" src="./New Tab_files/creative-movie-posters-film-art-peter-majarich-10.jpg" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20145316/creative-movie-posters-film-art-peter-majarich-10.jpg" style="display: inline;"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Designer Challenges Himself To Create A Movie Poster Every Day For A Year, And They're Pretty Cool</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">digitalsynopsis.com</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="8de9a5ebaa21d008b280761d908db8c9">
+      <a target="_blank" href="http://app.muz.li/go?link=https%3A%2F%2Fwww.dewanddoritos.com%2F&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20132338/Screenshot-at-Oct-20-13-23-14.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20132338/Screenshot-at-Oct-20-13-23-14.png"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Fuel Your Titan</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">dewanddoritos.com</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="e1ca14b16462490eda47eab847f21e1a">
+      <a target="_blank" href="http://app.muz.li/go?link=http%3A%2F%2Fautomotive.products.constellium.com%2F&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20102052/Screenshot-at-Oct-20-10-20-28.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20102052/Screenshot-at-Oct-20-10-20-28.png"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Automotive products | Constellium</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">automotive.products.constellium.com</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="79e4192c82f7ee2099674d8c4efd8599">
+      <a target="_blank" href="http://app.muz.li/go?link=http%3A%2F%2Fwww.duhaihang.com%2F%23%2Fwork%2F&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20132602/sharing.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20132602/sharing.jpg"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Du Haihang - Interactive Designer/Developer</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">duhaihang.com</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="206d4eda61a43b1d9c3d70b2a723bd5d">
+      <a target="_blank" href="http://app.muz.li/go?link=https%3A%2F%2Fnodio.net%2F&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20101808/Screenshot-at-Oct-20-10-17-33.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20101808/Screenshot-at-Oct-20-10-17-33.png"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Nodio - Product: Meet your digital guardian</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">nodio.net</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="79895e0e0c622a85edf892313a34e0ed">
+      <a target="_blank" href="http://app.muz.li/go?link=http%3A%2F%2Fww2.scabal.com%2Fen&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20100734/share.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20100734/share.jpg"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Scabal, London's finest tailored suits &amp; luxury fabric | Scabal</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">ww2.scabal.com</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="b112e85b02c620d41f6ddcb195825f3b">
+      <a target="_blank" href="http://app.muz.li/go?link=http%3A%2F%2Fdiscoveroutpost.com%2F&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20071403/og-image.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20071403/og-image.jpg"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Outpøst – an independent creative advertising agency</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">discoveroutpost.com</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="559c2cd40dbf137a51b66e4866b826aa">
+      <a target="_blank" href="http://app.muz.li/go?link=http%3A%2F%2Flablacklist.co%2F&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20100529/lablacklist.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20100529/lablacklist.jpg"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Lablacklist.co</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">lablacklist.co</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="28598fc9dfe56b260ec9f0dd88cade46" class="video">
+      <a target="_blank" href="http://app.muz.li/go?link=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D2vHogK7vFfU&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto">
+          <!-- ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video --><muzli-video ng-if="::item.video" thumbnail="::item.thumbnail" video-url="::item.video" video-id="::item.videoId"><div ng-click="::imageClicked()" ng-class="{ thumbnail: showThumbnail }" class="angular-youtube-wrapper thumbnail"><!-- ngIf: showThumbnail && thumbnail --><img ng-if="showThumbnail &amp;&amp; thumbnail" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy="http://img.youtube.com/vi/2vHogK7vFfU/mqdefault.jpg" data-original="http://img.youtube.com/vi/2vHogK7vFfU/mqdefault.jpg"><!-- end ngIf: showThumbnail && thumbnail --><!-- ngIf: !showThumbnail --></div></muzli-video><!-- end ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>&#8234;Unbelievably realistic hair drawn using 8 colored pencils by EmmyKalia&#8236;&#8207;</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">youtube.com</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="1b9f9713403565ce50354eec634f7761">
+      <a target="_blank" href="http://app.muz.li/go?link=http%3A%2F%2Fikeryou.jp%2Fworks%2Fg%2F&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/19160350/ogp.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/19160350/ogp.png"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>GLSL PARTICLE FONT</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">ikeryou.jp</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) --><li ng-repeat="item in muzliFeed track by (item.id || item.link)" ng-class="{
+          viral: item.viral,
+          video: !!item.video,
+          playing: item.playing,
+          animated: !!item.animated,
+          nsfw: !!item.nsfw
+        }" data-muzli-id="6b82934ecfcc61639019b2f36aa4326f">
+      <a target="_blank" href="http://app.muz.li/go?link=https%3A%2F%2Fstripe.com%2Fradar&amp;source=muzli" class="feedLink" ng-click="::postClick(item, $event)">
+        <div class="postPhoto">
+          <!-- ngIf: ::!item.video && !item.youtube --><img ng-if="::!item.video &amp;&amp; !item.youtube" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/19201531/social.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/19201531/social.png"><!-- end ngIf: ::!item.video && !item.youtube -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <span class="favorite" ng-click="::toggleFavorite($event, item)" ng-class="{ active: item.favorite }" title=""></span>
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+        </div>
+
+        <div class="postInfo">
+          <h3>Stripe: Radar</h3>
+          <div class="postMeta">
+            <span class="source" title="" ng-click="::sourceClick($event, item.source.name)">stripe.com</span>
+            <span class="virality hot" title="">5</span>
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in muzliFeed track by (item.id || item.link) -->
+  </ul><!-- end ngIf: muzliFeed.length -->
+  <ul ng-hide="muzliFeed.length || errors.indexOf(&#39;muzli-error&#39;) &gt; -1" class="ng-hide">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+<!--   <a href="#" class="more">All picks</a> -->
+</section><!-- /Sticky posts -->
+
+<h2 class="latest-stories" ng-hide="errors.indexOf(&#39;muzli-error&#39;) &gt; -1"><span>Latest Stories</span></h2>
+<scrollable-feed items="allFeed" sponsored="sponsored" ng-hide="errors.length" load-on-sort="viralTimes" show-favorite="" show-virality="" class=""><section id="feed"><!-- Feed posts -->
+  <ul class="cf" infinite-scroll="loadMore()" infinite-scroll-distance="2" infinite-scroll-immediate-check="false" infinite-scroll-disabled="!feed.length">
+
+    <!-- ngIf: sponsored && feed.length --><li class="sponsored" ng-if="sponsored &amp;&amp; feed.length">
+      <a target="_blank" ng-href="https://bobo.muz.li/revive/www/delivery/ck.php?oaparams=2__bannerid=11__zoneid=1__cb=d20cda7e17__oadest=http%3A%2F%2Fmuz.li%2Fsubscribe%2F" ng-click="promotionClick()" href="https://bobo.muz.li/revive/www/delivery/ck.php?oaparams=2__bannerid=11__zoneid=1__cb=d20cda7e17__oadest=http%3A%2F%2Fmuz.li%2Fsubscribe%2F">
+        <div class="postPhoto imgLoaded">
+          <img src="./New Tab_files/1dc98b926231f61c8154c31dc5c3a8e2.jpg" lazy="https://s3.amazonaws.com/muzli_ad_service/1dc98b926231f61c8154c31dc5c3a8e2.jpg" alt="" data-original="https://s3.amazonaws.com/muzli_ad_service/1dc98b926231f61c8154c31dc5c3a8e2.jpg" style="display: inline;">
+          <span class="beacon" style="visibility: hidden;" ng-bind-html="::sponsored.promotion"><a href="https://bobo.muz.li/revive/www/delivery/ck.php?oaparams=2__bannerid=11__zoneid=1__cb=d20cda7e17__oadest=http%3A%2F%2Fmuz.li%2Fsubscribe%2F" target="_blank"><img src="./New Tab_files/1dc98b926231f61c8154c31dc5c3a8e2.jpg" width="460" height="345" alt="" title="" border="0"></a><div id="beacon_d20cda7e17" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="./New Tab_files/lg.php" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div>
+</span>
+        </div>
+        <h4>PROMOTED</h4>
+      </a>
+    </li><!-- end ngIf: sponsored && feed.length -->
+    <!-- ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate" data-muzli-id="b888d2fb312860725e83e3ee23c02389" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=http%3A%2F%2Fabduzeedo.com%2Flynk-co-introducing-model-01&amp;source=abduzeedo" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=http%3A%2F%2Fabduzeedo.com%2Flynk-co-introducing-model-01&amp;source=abduzeedo">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="http://abduzeedo.com//sites/default/files/originals/1_01Sport%20copy.jpg" lazy="http://abduzeedo.com//sites/default/files/originals/1_01Sport%20copy.jpg" alt="" data-original="http://abduzeedo.com//sites/default/files/originals/1_01Sport%20copy.jpg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>LYNK &amp; CO - Introducing Model 01</h3>
+          <div class="postMeta">
+            <span title="" class="source _abduzeedo" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Abduzeedo</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">0</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate article" data-muzli-id="3aa0abb081746088809fc7159f4ad36f" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=http%3A%2F%2Farstechnica.com%2Fscience%2F2016%2F10%2Fhomeopaths-call-fdas-warning-about-baby-deaths-arbitrary-and-capricious%2F&amp;source=ars_technica" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=http%3A%2F%2Farstechnica.com%2Fscience%2F2016%2F10%2Fhomeopaths-call-fdas-warning-about-baby-deaths-arbitrary-and-capricious%2F&amp;source=ars_technica">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/GettyImages-169161517-800x534.jpg" lazy="https://cdn.arstechnica.net/wp-content/uploads/2016/10/GettyImages-169161517-800x534.jpg" alt="" data-original="https://cdn.arstechnica.net/wp-content/uploads/2016/10/GettyImages-169161517-800x534.jpg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>Homeopaths slam FDA for warning about infant deaths, illnesses</h3>
+          <div class="postMeta">
+            <span title="" class="source _ars_technica" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Ars Technica</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">1</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate" data-muzli-id="b6eb503e32ab8c32aa2681ed3f73bca8" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=http%3A%2F%2Fabduzeedo.com%2Flynk-co-share-mode-uiux&amp;source=abduzeedo" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=http%3A%2F%2Fabduzeedo.com%2Flynk-co-share-mode-uiux&amp;source=abduzeedo">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="http://abduzeedo.com//sites/default/files/originals/LYNKCO_share_button_app_book_car.jpg" lazy="http://abduzeedo.com//sites/default/files/originals/LYNKCO_share_button_app_book_car.jpg" alt="" data-original="http://abduzeedo.com//sites/default/files/originals/LYNKCO_share_button_app_book_car.jpg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>LYNK &amp; CO - Share Mode UI/UX</h3>
+          <div class="postMeta">
+            <span title="" class="source _abduzeedo" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Abduzeedo</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">1</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate article" data-muzli-id="7f27fa5f3246c07613e571e81ab5e689" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=https%3A%2F%2Ftechcrunch.com%2F2016%2F10%2F20%2Fopternative-sues-south-carolina-for-the-right-to-give-online-eye-exams-there%2F&amp;source=techcrunch" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=https%3A%2F%2Ftechcrunch.com%2F2016%2F10%2F20%2Fopternative-sues-south-carolina-for-the-right-to-give-online-eye-exams-there%2F&amp;source=techcrunch">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/opternative-test-photo.jpg" lazy="http://tctechcrunch2011.files.wordpress.com/2015/07/opternative-test-photo.jpg" alt="" data-original="http://tctechcrunch2011.files.wordpress.com/2015/07/opternative-test-photo.jpg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>Opternative sues South Carolina for the right to give online eye exams there</h3>
+          <div class="postMeta">
+            <span title="" class="source _techcrunch" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Techcrunch</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">1</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate article" data-muzli-id="7e12394ab3436ce783fb0bea60deb896" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=https%3A%2F%2Fliteraryreview.co.uk%2Fplaying-away&amp;source=hacker_news" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=https%3A%2F%2Fliteraryreview.co.uk%2Fplaying-away&amp;source=hacker_news">
+        <div class="postPhoto spinner">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" lazy="https://literaryreview.co.uk/wp-content/lr-files/2016/09/Issue-447-Oct-2016-600x800.png" alt="" data-original="https://literaryreview.co.uk/wp-content/lr-files/2016/09/Issue-447-Oct-2016-600x800.png"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>Playing Away: Dashing for the Post: The Letters of Patrick Leigh Fermor</h3>
+          <div class="postMeta">
+            <span title="" class="source _hacker_news" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Hacker News</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">6</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate" data-muzli-id="fe3aac516b45bb15e0f73ac35e980864" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=https%3A%2F%2Fdribbble.com%2Fshots%2F3039354-Explorers-Club-Pin-Pack&amp;source=dribbble" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=https%3A%2F%2Fdribbble.com%2Fshots%2F3039354-Explorers-Club-Pin-Pack&amp;source=dribbble">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/pin_pack_4.jpg" lazy="https://d13yacurqjgara.cloudfront.net/users/31348/screenshots/3039354/pin_pack_4.jpg" alt="" data-original="https://d13yacurqjgara.cloudfront.net/users/31348/screenshots/3039354/pin_pack_4.jpg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>Explorers Club: Pin Pack</h3>
+          <div class="postMeta">
+            <span title="" class="source _dribbble" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Dribbble</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">0</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) --><div class="stats" ng-if="::(item.stats &amp;&amp; showVirality)">
+              <span class="views" title="">226</span>
+              <span class="likes" title="" ng-class="{hot : item.stats.likes &gt; 150}">34</span>
+            </div><!-- end ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate" data-muzli-id="8218fee728887774866e06c5e23bc528" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=http%3A%2F%2Fwww.designboom.com%2Fdesign%2Fmarset-reflections-on-light-series-10-20-2016%2F&amp;source=designboom" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=http%3A%2F%2Fwww.designboom.com%2Fdesign%2Fmarset-reflections-on-light-series-10-20-2016%2F&amp;source=designboom">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/marset-reflections-on-light-designboom1800art-818x600.jpg" lazy="http://www.designboom.com/wp-content/uploads/2016/10/marset-reflections-on-light-designboom1800art-818x600.jpg" alt="" data-original="http://www.designboom.com/wp-content/uploads/2016/10/marset-reflections-on-light-designboom1800art-818x600.jpg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>marset reflections on light series explores the designing of light</h3>
+          <div class="postMeta">
+            <span title="" class="source _designboom" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Designboom</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">3</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate viral" data-muzli-id="69c4a72c8114592a32c146890e88ee45" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=https%3A%2F%2Fwww.behance.net%2Fgallery%2F43323651%2FTroopers&amp;source=behance" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=https%3A%2F%2Fwww.behance.net%2Fgallery%2F43323651%2FTroopers&amp;source=behance">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/369a2343323651.Y3JvcCw4NzcsNjg2LDI1NSw2Mg.jpeg" lazy="https://mir-s3-cdn-cf.behance.net/projects/404/369a2343323651.Y3JvcCw4NzcsNjg2LDI1NSw2Mg.jpeg" alt="" data-original="https://mir-s3-cdn-cf.behance.net/projects/404/369a2343323651.Y3JvcCw4NzcsNjg2LDI1NSw2Mg.jpeg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>Troopers.</h3>
+          <div class="postMeta">
+            <span title="" class="source _behance" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Behance</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">102</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate" data-muzli-id="9d8dcc14177efdde0677c3a8a1fef26b" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=https%3A%2F%2Fdribbble.com%2Fshots%2F3039292-Shadow-guidelines-for-Shyp-Web&amp;source=dribbble" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=https%3A%2F%2Fdribbble.com%2Fshots%2F3039292-Shadow-guidelines-for-Shyp-Web&amp;source=dribbble">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/cover.png" lazy="https://d13yacurqjgara.cloudfront.net/users/31398/screenshots/3039292/cover.png" alt="" data-original="https://d13yacurqjgara.cloudfront.net/users/31398/screenshots/3039292/cover.png" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>Shadow guidelines for Shyp Web</h3>
+          <div class="postMeta">
+            <span title="" class="source _dribbble" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Dribbble</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">2</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) --><div class="stats" ng-if="::(item.stats &amp;&amp; showVirality)">
+              <span class="views" title="">296</span>
+              <span class="likes" title="" ng-class="{hot : item.stats.likes &gt; 150}">28</span>
+            </div><!-- end ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate article" data-muzli-id="154226e25b9150811ab81fd805e39024" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=http%3A%2F%2Fthenextweb.com%2Finsider%2F2016%2F10%2F20%2Ftesla-dont-use-your-self-driving-car-for-ride-sharing-services-like-uber-or-lyft%2F&amp;source=the_next_web" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=http%3A%2F%2Fthenextweb.com%2Finsider%2F2016%2F10%2F20%2Ftesla-dont-use-your-self-driving-car-for-ride-sharing-services-like-uber-or-lyft%2F&amp;source=the_next_web">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/Tesla-796x398.jpg" lazy="https://cdn1.tnwcdn.com/wp-content/blogs.dir/1/files/2016/07/Tesla-796x398.jpg" alt="" data-original="https://cdn1.tnwcdn.com/wp-content/blogs.dir/1/files/2016/07/Tesla-796x398.jpg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>Tesla: Don’t use your self-driving car for ride-sharing services like Uber or Lyft</h3>
+          <div class="postMeta">
+            <span title="" class="source _the_next_web" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">The Next Web</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">0</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate article" data-muzli-id="8ac1fd28cf29e38f444e142c1ff31e10" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=https%3A%2F%2Fmedium.com%2Fwake-blog%2Fhow-marketers-and-designers-can-work-better-together-4537549df6ab&amp;source=designer_news" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=https%3A%2F%2Fmedium.com%2Fwake-blog%2Fhow-marketers-and-designers-can-work-better-together-4537549df6ab&amp;source=designer_news">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/1-f1ibj9trDVsp_RhzfNvErQ.jpeg" lazy="https://cdn-images-1.medium.com/max/1200/1*f1ibj9trDVsp_RhzfNvErQ.jpeg" alt="" data-original="https://cdn-images-1.medium.com/max/1200/1*f1ibj9trDVsp_RhzfNvErQ.jpeg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>How marketers and designers can work better together.</h3>
+          <div class="postMeta">
+            <span title="" class="source _designer_news" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Designer News</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url --><span class="dnLink" ng-click="openDNlink($event, item.link_out_direct)" ng-if="item.source.name == &#39;designer_news&#39; &amp;&amp; item.external_url" title=""></span><!-- end ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">0</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate article" data-muzli-id="bb32b983097a43f2a3dd338702909375" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=http%3A%2F%2Fhackingui.com%2Fpodcast%2Fthe-rockstar-who-turned-a-side-project-into-a-multi-million-dollar-company-david-okuniev-typeform%2F&amp;source=designer_news" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=http%3A%2F%2Fhackingui.com%2Fpodcast%2Fthe-rockstar-who-turned-a-side-project-into-a-multi-million-dollar-company-david-okuniev-typeform%2F&amp;source=designer_news">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/ep19-social-1024x512.jpg" lazy="http://static.hackingui.com.s3.amazonaws.com/2016/10/ep19-social-1024x512.jpg" alt="" data-original="http://static.hackingui.com.s3.amazonaws.com/2016/10/ep19-social-1024x512.jpg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>The Hacking UI Podcast #19 - David Okuniev (Typeform)</h3>
+          <div class="postMeta">
+            <span title="" class="source _designer_news" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Designer News</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url --><span class="dnLink" ng-click="openDNlink($event, item.link_out_direct)" ng-if="item.source.name == &#39;designer_news&#39; &amp;&amp; item.external_url" title=""></span><!-- end ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">0</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate" data-muzli-id="342516e95c0fee7b76e3164ef56a91fc" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=http%3A%2F%2Fdesign-milk.com%2Fwhittaker-cube-dravitzki-brown%2F&amp;source=design_milk" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=http%3A%2F%2Fdesign-milk.com%2Fwhittaker-cube-dravitzki-brown%2F&amp;source=design_milk">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/Alister-Brown-Whittaker-Cube-1-600x332.jpg" lazy="http://3.design-milk.com/images/2016/10/Alister-Brown-Whittaker-Cube-1-600x332.jpg" alt="" data-original="http://3.design-milk.com/images/2016/10/Alister-Brown-Whittaker-Cube-1-600x332.jpg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>A Budget-Friendly, Modest House Makes The Most of its Space</h3>
+          <div class="postMeta">
+            <span title="" class="source _design_milk" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Design Milk</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">30</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate viral pick" data-muzli-id="8de9a5ebaa21d008b280761d908db8c9" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=https%3A%2F%2Fwww.dewanddoritos.com%2F&amp;source=muzli" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=https%3A%2F%2Fwww.dewanddoritos.com%2F&amp;source=muzli">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/Screenshot-at-Oct-20-13-23-14.png" lazy="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20132338/Screenshot-at-Oct-20-13-23-14.png" alt="" data-original="https://dl4rygnmrir77.cloudfront.net/muzli_feed/wp-content/uploads/2016/10/20132338/Screenshot-at-Oct-20-13-23-14.png" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>Fuel Your Titan</h3>
+          <div class="postMeta">
+            <span title="" class="source _muzli" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">dewanddoritos.com</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">60</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) --><li ng-repeat="item in feed track by (item.id || item.link)" ng-class="{ article: item.source.article &amp;&amp; !item.video,
+                    visited: item.visited, viral: !!item.viralTimes,
+                    hasStats: item.hasStats, pick: item.pick,
+                    animated: !!item.animated,
+                    video: !!item.video,
+                    vlog: !!item.sub_source,
+                    nsfw: !!item.nsfw,
+                    fallbackImage: item.fallbackImage }" class="angular-animate" data-muzli-id="15bb68e2d4f46d1a68c49f89c7b5c31f" style="">
+      <a target="_blank" ng-href="http://app.muz.li/go?link=https%3A%2F%2Fwww.behance.net%2Fgallery%2F43996121%2F-FLOWER-&amp;source=behance" class="feedLink" ng-click="::postClick(item)" href="http://app.muz.li/go?link=https%3A%2F%2Fwww.behance.net%2Fgallery%2F43996121%2F-FLOWER-&amp;source=behance">
+        <div class="postPhoto imgLoaded">
+          <!-- ngIf: ::!item.video --><img ng-if="::!item.video" src="./New Tab_files/021ef843996121.Y3JvcCwxMTk1LDkzNSwxMDMsMA.jpeg" lazy="https://mir-s3-cdn-cf.behance.net/projects/404/021ef843996121.Y3JvcCwxMTk1LDkzNSwxMDMsMA.jpeg" alt="" data-original="https://mir-s3-cdn-cf.behance.net/projects/404/021ef843996121.Y3JvcCwxMTk1LDkzNSwxMDMsMA.jpeg" style="display: inline;"><!-- end ngIf: ::!item.video -->
+          <!-- ngIf: ::item.video -->
+          <div class="postUtils">
+            <!-- ngIf: showRemove -->
+            <!-- ngIf: showFavorite --><span class="favorite" ng-click="::toggleFavorite($event, item)" ng-if="showFavorite" ng-class="{ active: item.favorite }" title=""></span><!-- end ngIf: showFavorite -->
+            <span class="facebook" ng-click="::openSharer($event, &#39;facebook&#39;, item)" title=""></span>
+            <span class="twitter" ng-click="::openSharer($event, &#39;twitter&#39;, item)" title=""></span>
+            <span class="linkedin" ng-click="::openSharer($event, &#39;linkedin&#39;, item)" title=""></span>
+            <span class="slack" ng-click="::sendSlack($event, item)" title=""></span>
+          </div>
+          <span class="badge">Editor's pick</span>
+        </div>
+
+        <div class="postInfo">
+          <h3>? FLOWER ?</h3>
+          <div class="postMeta">
+            <span title="" class="source _behance" ui-sref="feed({ name: item.source.name })" ng-click="::sourceClick($event, item.source.name)">Behance</span>
+            <!-- ngIf: item.source.name == 'designer_news' && item.external_url -->
+            <!-- ngIf: ::showVirality --><span ng-if="::showVirality" class="virality" title="">3</span><!-- end ngIf: ::showVirality -->
+            <!-- ngIf: ::item.sub_source -->
+            <!-- ngIf: ::(item.stats && showVirality) -->
+          </div>
+        </div>
+      </a>
+    </li><!-- end ngRepeat: item in feed track by (item.id || item.link) -->
+  </ul>
+  <div ng-show="feed &amp;&amp; !feed.length &amp;&amp; !blockEmpty" ng-transclude="no-data" class="ng-hide">
+  </div>
+  <ul class="dummy ng-hide" ng-show="!feed">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+</section>
+</scrollable-feed>
+</div>
+    <div id="oops" ng-show="errors.length" class="ng-hide">Oops! Something went wrong <a href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-click="reload()">Try again</a>.</div>
+  </main>
+  <!-- /Main content -->
+
+  <!-- Sidebar -->
+  <nav id="sidebar" class="sidebar" ng-class="{ hover: openSidebar, sorting: sourcesDragged }" ng-mouseenter="mouseEnterSidebar()" click-outside="clickOutsideSidebar()" ng-hide="!sources || !sources.length"><!-- Sidebar -->
+
+    <header><!-- Header -->
+      <a class="logo" ng-class="{active: !currentSource}" href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-click="clickLogo()"></a>
+      <a class="sidebarMenu" ng-click="hive.show($event)" href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" title=""><!-- ngIf: hive.neverOpened --><span ng-if="hive.neverOpened" class="pulsate"><i></i></span><!-- end ngIf: hive.neverOpened --></a>
+    </header><!-- /Header -->
+
+    <div class="sourceSearch" ng-hide="sourcesDragged">
+      <div class="searchContainer">
+        <input type="text" ng-model="searchSources" ng-model-options="{ debounce: 500 }" ng-keydown="searchSourcesKeyDown($event, filteredSources)" placeholder="Search for feeds" ng-blur="blurSearchSources()" class="ng-pristine ng-untouched ng-valid ng-empty">
+      </div>
+    </div>
+
+    <ul class="sourcesConstant" muzli-home-switch="homeSwitched" ng-hide="searchSources">
+      <li class="enabled" ng-class="{ active: currentSource === &#39;sources&#39; }">
+        <span class="all-sources-icon" ng-click="clickSource()">All your feeds</span>
+      </li>
+      <li class="enabled unread" ng-class="{ active: (currentSource &amp;&amp; currentSource.name === muzli.name), unread: muzli.read === false }" ng-click="clickSource(muzli)">
+        <span class="source _muzli">Our Picks</span>
+      </li>
+    </ul>
+    <ul class="sources ng-pristine ng-untouched ng-valid ui-sortable ng-not-empty" ui-sortable="sideBarSortableOptions" ng-model="::sources">
+      <!-- ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="dribbble" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _dribbble">Dribbble</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://dribbble.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://dribbble.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="designer_news" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _designer_news">Designer News</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://designernews.co/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://designernews.co/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="awwwards" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _awwwards">Awwwards</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://awwwards.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://awwwards.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="smashing_mag" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _smashing_mag">Smashing Mag</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://smashingmagazine.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://smashingmagazine.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="css_winner" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _css_winner">CSS Winner</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://csswinner.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://csswinner.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="abduzeedo" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _abduzeedo">Abduzeedo</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://abduzeedo.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://abduzeedo.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="behance" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _behance">Behance</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://behance.net/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://behance.net/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="design_milk" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _design_milk">Design Milk</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://design-milk.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://design-milk.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="techcrunch" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _techcrunch">Techcrunch</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://techcrunch.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://techcrunch.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="producthunt" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _producthunt">Product Hunt</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://producthunt.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://producthunt.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="the_next_web" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _the_next_web">The Next Web</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://thenextweb.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://thenextweb.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="sidebar" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _sidebar">Sidebar</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://sidebar.io/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://sidebar.io/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="designboom" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _designboom">Designboom</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://designboom.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://designboom.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="webdesigner_depot" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _webdesigner_depot">Webdesigner Depot</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://webdesignerdepot.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://webdesignerdepot.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="ars_technica" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _ars_technica">Ars Technica</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://arstechnica.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://arstechnica.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="hacker_news" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _hacker_news">Hacker News</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://news.ycombinator.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://news.ycombinator.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="css_design_awards" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _css_design_awards">CSS Design Awards</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://cssdesignawards.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://cssdesignawards.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="css_author" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled unread ui-sortable-handle">
+        <span href="#" class="source _css_author">CSS Author</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://cssauthor.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://cssauthor.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name --><li ng-repeat="source in sources | sourcesFilter:searchSources as filteredSources track by source.name" data-source="little_big_details" ng-click="clickSource(source)" ng-class="{
+            enabled: source._enabled,
+            active: (currentSource &amp;&amp; source.name === currentSource.name),
+            unread: source.read === false,
+            preFocused: preFocusedSourceIndex === $index
+          }" class="enabled ui-sortable-handle">
+        <span href="#" class="source _little_big_details">Little Big Details</span>
+        <!-- ngIf: ::source.url --><a ng-if="::source.url" tabindex="-1" ng-href="http://littlebigdetails.com/?ref=muzli" target="_blank" class="feedLink" ng-click="events.sidebar.clickLink(source.name, $event)" title="" href="http://littlebigdetails.com/?ref=muzli"></a><!-- end ngIf: ::source.url -->
+      </li><!-- end ngRepeat: source in sources | sourcesFilter:searchSources as filteredSources track by source.name -->
+    </ul>
+    <div class="moreFeeds ng-hide" ng-click="hive.show($event)" ng-show="searchSources"><a href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#">More feeds</a></div>
+  </nav>
+  <!-- /Sidebar -->
+
+  <div ng-click="jumpToRecent()" id="scrollIndicator"><i></i></div>
+  <aside class="aside" click-outside="::closeMenu()" outside-if-not="menuOpener, aside">
+    <!-- Uninstall -->
+    <div id="uninstall">
+      <h3>Too Much? That's okay</h3>
+      <p>Our Lite version<br><strong style="font-weight: 700;background: lemonchiffon;">does not override your default new tab</strong>.<br>Muzli will still be accessible by clicking the icon. ( <img src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/icon19.png" alt="" style="height: 13px;vertical-align: middle;"> )</p>
+      <a href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" class="switchToLite" ng-click="switchToLite()">Try the Lite Version</a>
+      <a href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-click="uninstallClick()">No thanks, remove Muzli completely</a><br><br>or <a href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-click="uninstallIntentCancel()">cancel and go back</a>
+    </div>
+    <!-- / Uninstall -->
+    <!-- Settings -->
+    <div id="settings">
+      <div id="user">
+        <div class="loggedIn" ng-show="user">
+          <div class="userInfo">
+            <img class="avatar" alt="" ng-src="http://pbs.twimg.com/profile_images/786484825762914304/h53E9c3__normal.jpg" src="./New Tab_files/h53E9c3__normal.jpg"> <h5>W&#786;&#771;&#774;&#780;&#594;&#836;&#844;&#835;&#777;&#855;l&#871;&#769;&#872;&#867;&#879;&#862;&#410;</h5>
+            <span>via Twitter</span>
+          </div>
+
+          <a tabindex="-1" href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-click="logOut()">Logout</a>
+        </div>
+        <div class="anonymous ng-hide" ng-show="!user">
+          <div class="userInfo">
+            <h5>Sign in to get more from Muzli</h5>
+          </div>
+          <a href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-click="signIn()">Sign in</a>
+        </div>
+      </div>
+
+      <!-- ngIf: isLiteVersion === true || isLiteVersion === false -->
+
+      <!-- ngIf: !hideEnableAuthRecentSitesSetting || toggleMinimalView || showQuickLinks --><div class="layout" ng-if="!hideEnableAuthRecentSitesSetting || toggleMinimalView || showQuickLinks">
+        <h5>View Preferences</h5>
+        <ul class="appUtils">
+          <!-- ngIf: !hideEnableAuthRecentSitesSetting --><li ng-if="!hideEnableAuthRecentSitesSetting">
+            <div ng-class="{ &#39;true&#39;: !!recentSites }" class="toggle" ng-click="authRecentSitesAction(!recentSites, &#39;Settings menu&#39;, !recentSites ? &#39;enable&#39;: &#39;disable&#39;)"><i></i> Enable most visited</div>
+          </li><!-- end ngIf: !hideEnableAuthRecentSitesSetting -->
+          <!-- ngIf: toggleMinimalView --><li ng-if="toggleMinimalView">
+            <div ng-class="{&#39;true&#39;: isSwitchedToHalfView}" class="toggle" ng-click="toggleMinimalView()"><i></i> Full view on load</div>
+          </li><!-- end ngIf: toggleMinimalView -->
+          <!-- ngIf: showQuickLinks --><li ng-if="showQuickLinks">
+            <div ng-class="{&#39;true&#39;: isQuickLinks}" class="toggle" ng-click="showQuickLinks($event)"><i></i>  Show custom links bubble</div>
+          </li><!-- end ngIf: showQuickLinks -->
+        </ul>
+        <div class="preview layout_7" ng-class="{
+          layout_1: (recentSites &amp;&amp; !isSwitchedToHalfView &amp;&amp; isQuickLinks),
+          layout_2: (!recentSites &amp;&amp; !isSwitchedToHalfView &amp;&amp; isQuickLinks),
+          layout_3: (!recentSites &amp;&amp; isSwitchedToHalfView &amp;&amp; isQuickLinks),
+          layout_4: (!recentSites &amp;&amp; isSwitchedToHalfView &amp;&amp; !isQuickLinks),
+          layout_5: (recentSites &amp;&amp; isSwitchedToHalfView &amp;&amp; !isQuickLinks),
+          layout_6: (recentSites &amp;&amp; isSwitchedToHalfView &amp;&amp; isQuickLinks),
+          layout_7: (!recentSites &amp;&amp; !isSwitchedToHalfView &amp;&amp; !isQuickLinks),
+        }"></div>
+      </div><!-- end ngIf: !hideEnableAuthRecentSitesSetting || toggleMinimalView || showQuickLinks -->
+
+      <div class="defaultFeed">
+        Default feed
+        <div class="theme"><span ng-class="{ active: homeSwitched }" class="picks" title="" ng-click="homeSwitch(true)"></span><span title="" ng-class="{ active: !homeSwitched }" class="all active" ng-click="homeSwitch(false)"></span></div>
+      </div>
+
+      <div class="themeToggle">
+        Color theme
+        <div class="theme"><span ng-click="setTheme(&#39;dark&#39;)" class="dark" title=""></span><span ng-click="setTheme(&#39;white&#39;)" title="" class="light"></span></div>
+      </div>
+
+      <div class="defaultSearch">
+        Default search
+        <div class="search">
+          <span class="muzli" title="" ng-class="{ default: defaultSearch === &#39;muzli&#39; }" ng-click="setDefaultSearch(&#39;muzli&#39;)"></span>
+          <span class="google default" title="" ng-class="{ default: defaultSearch === &#39;google&#39; }" ng-click="setDefaultSearch(&#39;google&#39;)"></span>
+        </div>
+      </div>
+
+      <div class="links">
+        <div class="channels">
+          <h5>Muzli Channels</h5>
+          <ul>
+            <!-- ngRepeat: item in channelsLinks --><li ng-repeat="item in channelsLinks"><a ng-href="http://muz.li/blog/" ng-click="events.settingsMenu.clickLink(item.text)" href="http://muz.li/blog/">Muzli Blog</a></li><!-- end ngRepeat: item in channelsLinks --><li ng-repeat="item in channelsLinks"><a ng-href="http://designers.muz.li/" ng-click="events.settingsMenu.clickLink(item.text)" href="http://designers.muz.li/">Designer List</a></li><!-- end ngRepeat: item in channelsLinks --><li ng-repeat="item in channelsLinks"><a ng-href="https://medium.com/@usemuzli" ng-click="events.settingsMenu.clickLink(item.text)" href="https://medium.com/@usemuzli">Muzli @ Medium</a></li><!-- end ngRepeat: item in channelsLinks --><li ng-repeat="item in channelsLinks"><a ng-href="https://facebook.com/usemuzli" ng-click="events.settingsMenu.clickLink(item.text)" href="https://facebook.com/usemuzli">Muzli @ Facebook</a></li><!-- end ngRepeat: item in channelsLinks --><li ng-repeat="item in channelsLinks"><a ng-href="https://twitter.com/usemuzli" ng-click="events.settingsMenu.clickLink(item.text)" href="https://twitter.com/usemuzli">Muzli @ Twitter</a></li><!-- end ngRepeat: item in channelsLinks -->
+          </ul>
+        </div>
+        <div class="contact">
+          <h5>Contact</h5>
+          <ul>
+            <!-- ngRepeat: item in contactLinks --><li ng-repeat="item in contactLinks"><a ng-href="http://muz.li/about/?link#contact" ng-click="events.settingsMenu.clickLink(item.text)" href="http://muz.li/about/?link#contact">Suggest a link</a></li><!-- end ngRepeat: item in contactLinks --><li ng-repeat="item in contactLinks"><a ng-href="http://muz.li/about/?source#contact" ng-click="events.settingsMenu.clickLink(item.text)" href="http://muz.li/about/?source#contact">Suggest a source</a></li><!-- end ngRepeat: item in contactLinks --><li ng-repeat="item in contactLinks"><a ng-href="http://muz.li/about/?feedback#contact" ng-click="events.settingsMenu.clickLink(item.text)" href="http://muz.li/about/?feedback#contact">General feedback</a></li><!-- end ngRepeat: item in contactLinks --><li ng-repeat="item in contactLinks"><a ng-href="http://muz.li/about/?idea#contact" ng-click="events.settingsMenu.clickLink(item.text)" href="http://muz.li/about/?idea#contact">I have an idea</a></li><!-- end ngRepeat: item in contactLinks --><li ng-repeat="item in contactLinks"><a ng-href="http://muz.li/about/?ads#contact" ng-click="events.settingsMenu.clickLink(item.text)" href="http://muz.li/about/?ads#contact">Advertise with us</a></li><!-- end ngRepeat: item in contactLinks -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- ngIf: uninstallIntent --><a tabindex="-1" id="uninstallLink" ng-click="uninstallIntent()" href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#" ng-if="uninstallIntent">Uninstall Muzli</a><!-- end ngIf: uninstallIntent -->
+
+      <div class="social">
+        <a class="twitter" ng-click="twitterFollow()" href="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/index.html#">6765</a>
+        <a class="fb" href="https://facebook.com/usemuzli">18400</a>
+        <a class="digest" href="http://muz.li/subscribe/">Weekly Digest</a>
+      </div>
+
+    </div>
+    <!-- / Settings -->
+  </aside>
+
+  <!-- ngIf: hive.showSourceInventory -->
+
+  <!-- Auth -->
+  <!-- ngIf: vm.showSignInDialog -->
+  <!-- /Auth -->
+
+  <!-- Auth ReLogin -->
+  <!-- ngIf: vm.showSignInDialogReLogin || vm.showSignInDialogReLoginWithoutScratch -->
+  <!-- /Auth -->
+
+  <!-- Auth promo -->
+  <!-- ngIf: vm.showPromoSignInDialog -->
+  <!-- /Auth -->
+
+  <!-- Share promo -->
+  <!-- ngIf: user && vm.showThanksYouSignInDialog -->
+  <!-- /Share promo -->
+
+  <!-- Welcome bundles -->
+  <!-- ngIf: vm.showWelcome -->
+  <!-- /Welcome bundles -->
+
+  <!-- User error bubble -->
+  <div id="errorBubble" class="alert" ng-class="{ hide: userError &amp;&amp; (hideUserError || vm.showSignInDialog || vm.showSignInDialogReLogin || vm.showSignInDialogReLoginWithoutScratch ||  vm.showPromoSignInDialog || vm.showThanksYouSignInDialog), show: userError &amp;&amp; !hideUserError &amp;&amp; !vm.showSignInDialog &amp;&amp; !vm.showSignInDialogReLogin &amp;&amp; !vm.showSignInDialogReLoginWithoutScratch &amp;&amp; !vm.showPromoSignInDialog &amp;&amp; !vm.showThanksYouSignInDialog}" click-outside="clickOutsideBubble()">
+    <!-- ngIf: userError === '401' -->
+    <!-- ngIf: userError === 'missing_email' -->
+    <!-- ngIf: userError === 'general_error' -->
+  </div>
+  <!-- /User error bubble -->
+</div>
+<!-- /Main wrapper -->
+
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/js/bootstrap-body.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/ramda.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/jquery-2.2.0.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/jquery.lazyload.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/jquery-ui.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/tooltipsy.source.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/angular.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/angular-animate.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/angular-ui-router.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/sortable.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/ng-infinite-scroll.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/clickoutside.directive.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/papaparse.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/lib/fuse.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/bootstrap/module.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/user/module.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/user/module.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/user/user.srv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/search/module.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/search/search.srv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/sources/module.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/sources/list.const.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/sources/list.srv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/links/module.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/feed/module.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/feed/scrollable.drv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/feed/fetch.service.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/feed/lazy-image.drv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/feed/video.drv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/sites/module.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/sites/recent-sites.srv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/muzli/module.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/muzli/storage.srv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/muzli/social.srv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/muzli/track.srv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/modules/muzli/tooltip.drv.js"></script>
+<script src="chrome-extension://glcipcfhmopcgidicgdociohdoicpdfc/dist/template.js"></script>
+
+
+<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content" id="ui-id-1" tabindex="0" style="display: none;"></ul><span role="status" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></span><script src="./New Tab_files/spc.php"></script></body></html>

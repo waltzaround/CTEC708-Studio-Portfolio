@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+
+  <html lang="en">
+    <head>
+      <meta charset="utf-8">
+
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Walter Lim</title> <!-- OMG A TITLE -->
+      <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'> <!-- OMG AN AWESOME FREE FONT WE CAN DOWNLOAD FROM GOOGLE :D :D :D. Seriously though, Google Fonts is awesome. -->
+      <link href="css/style.css" rel="stylesheet" type="text/css"> <!-- Link to CSS so the website looks pretty 
+    ╰(✧∇✧╰)
+  -->
+    </head>
+
+    <body>
+        <h1>the matter project</h1>
+
+        <a id="github" href="https://github.com/WeAreFlat">View the repository here</a>
+        <br><br>
+        <a id="aut" href="https://trello.com/b/z4G26NSy/flatmates">View project tracking here</a>
+        <br><br>  
+
+Flattie is a tool developed to help university students find cheap rentals. Given that the median rent in Auckland is hovering at $500/week (“Rent Price Index | Trade Me,” 2016), the task is difficult. This project is further warranted by the fact that Auckland is becoming increasingly unaffordable for many citizens as reported by the Demographia Housing Survey. It is important to note that Auckland has the fifth least affordable homes globally (Gibson, 2016). We believed that this was an issue that warranted investigation and as a result, the Flattie project was born. 
+<br><br>
+As homes become more unaffordable (Crampton, 2016), more people are turning to flatting as an alternative (Lynn, 2015). Property data for Auckland exists, but it is relatively inaccessible to the general public; detailed property data is held by a company called CoreLogic, and this data is not readily available to the public without jumping through many bureaucratic hoops. The Ministry of Business, Innovation and Employment has rental data dating back to the 1990s, but this data is marred by convoluted formatting and the use of SAUs, or Specific Area Units (“Rental bond data | Ministry of Business, Innovation and Employment,” 2016). When we developed flattie, we parsed the ministry rental data and made it human readable through the use of a map.
+<br><br>
+Flattie is a web application that provides visibility of housing affordability, as well as availability for both flatmates and entire homes. It sits between informal flatmate finder groups on Facebook, and websites like Trade Me that formally facilitate rental living arrangements. Instead of trying to organize flatters and renters, it serves a role as a nonpartisan advisory tool; it provides rental pricing data, in an accessible format through well designed data visualization. It makes it easier for both renters renting an individual home, and flatmates who share a home to understand pricing in any given suburb in Auckland. It provides them with a better understanding of how much they should be paying relative to the neighbourhood. 
+<br><br>
+Compared to existing data visualization tools, Flattie makes it easy to understand how much they should expect to pay for accommodation in Auckland. Alternative options like the NZ government’s Tenancy services website provide lists of rental data for suburbs. However, the tenancy website makes it difficult to compare adjacent suburbs without a comprehensive understanding of the city. 
+<br><br>
+When we sought out to help students, we imagined an application that would be developed to be responsive and accessible. Prior to development, we extensively researched other tools that provide rental data and discovered that most were either simple articles that cited data in a nice format, or were simply lists on websites that made it difficult to visualize pricing in any given suburb when benchmarked against adjacent suburbs.
+<br><br>
+We initially planned to use this project as an opportunity to learn how to implement the react application framework. We saw it as an opportunity to put learning into practice. React is a JavaScript library that allows developers to write websites as a series of components. This strategic decision was a gigantic mistake. The decision delayed progress by eight weeks as we struggled to comprehend the underlying component systems, schemas and methods that were necessary to integrate it with our data sources. In hindsight, we should have spent more time exploring how much time it would have actually taken to implement a proper JavaScript component library as this held us back at a literal standstill for the bulk of the semester. Until we abandoned the concept of building a modular web application, things ground to a halt after the first two weeks. This changed in the final two weeks of the semester when we abandoned everything. We started again from scratch. This time with an agile approach and UX methodologies in play to produce a better web application.
+<br><br>
+We initially began the project as an attempt to build a news platform from scratch using Node.JS and the React framework. We quickly found this to be far too overwhelming and scrapped the project after a few weeks into the semester. We attended a hackathon called GovHack and gleaned an opportunity from it; many government datasets were readily available for public consumption. From this point, we saw an opportunity to build what would eventually become Flattie. 
+<br><br>
+From a technical standpoint, I am relatively satisfied. We made use of the Trade Me API to provide live listing data to our users; this data allowed us to show them how many rental and flatmate listings were available in a suburb at any given time. We utilised the Google Maps API to build our data visualization rapidly; using Google meant that we didn’t have to even think about how to build a mapping system or deal with GeoJSON coordinates. The technical implementation was done for us by adding a few lines of code to the project importing all the google data.
+<br><br>
+When hardware requirements were taken into consideration, we opted to host our web application with the Microsoft Azure Cloud Platform. It meant that any time we submitted code to the master branch of our repository, the website would automatically update with the latest committed changes. This enabled us to test changes on our live site significantly faster than conventional methods and enabled us to rapidly iterate on new designs. Thanks to this technology stack, we built flattie within the last two weeks of the semester, abandoning all past ideas, wireframes and technical debt to actually build something useful.
+<br><br>Crampton, E. (2016, June 28). How to fix a crisis: An Auckland housing manifesto. Retrieved from http://thespinoff.co.nz/society/28-06-2016/an-auckland-housing-manifesto-how-to-fix-a-crisis/
+<br>Lynn, A. (2015, September). Living costs don’t cut it. Retrieved November 1, 2016, from http://www.stuff.co.nz/national/education/71835555/auckland-students-struggle-to-get-by-on-living-allowance
+<br>Rental bond data | Ministry of Business, Innovation and Employment. (2016). Retrieved November 1, 2016, from http://www.mbie.govt.nz/info-services/housing-property/sector-information-and-statistics/rental-bond-data
+<br>Rent Price Index | Trade Me. (2016, August). Retrieved November 1, 2016, from http://www.trademe.co.nz/property/price-index/for-rent/
+
+        <br><br>
+        
+
+        
+
+
+    </body>
+
+
+
+
+ </html>
