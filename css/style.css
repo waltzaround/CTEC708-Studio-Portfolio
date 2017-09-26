@@ -11,7 +11,8 @@ width: 100%;
       line-height:1.6;
       font-size:18px;
       margin:100px auto;
-      font-family: 'Montserrat';
+      font-family: 'Muli';
+      font-weight: 700;
       color: #ffffff;
       padding:0 10px;
       background: linear-gradient(231deg, #ac19c7, #114cbc);
@@ -29,7 +30,8 @@ width: 100%;
     h1,h2,h3{
       line-height:1.4;
       font-size: 2em;
-      font-family: 'Montserrat';
+      font-family: 'Muli';
+      font-weight: 700;
 }
 
    header {
@@ -76,14 +78,17 @@ Yes, avoiding code repetition is best practice but im too tired to think about t
 
 
 
-#colab {
+#linky {
   color: #EF9A9A;
   text-decoration: none;
+
 }
 
-#stefan {
-  color: #F48FB1;
-  text-decoration: none;
+#linky:hover {
+    color: #BBDEFB;
+}
+
+
 }
 
 #aut {
