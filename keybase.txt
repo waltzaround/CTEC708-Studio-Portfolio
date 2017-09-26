@@ -1,0 +1,81 @@
+==================================================================
+https://keybase.io/waltzing
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://walt.online
+  * I am waltzing (https://keybase.io/waltzing) on keybase.
+  * I have a public key with fingerprint 4BF5 7CF4 6AEE F85B A1B4  5EB1 D292 5877 CE55 D761
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "010165dd706e0cdfc9f48600453266ea886c6f403e01db03cbd8271f280ab283151e0a",
+      "fingerprint": "4bf57cf46aeef85ba1b45eb1d2925877ce55d761",
+      "host": "keybase.io",
+      "key_id": "d2925877ce55d761",
+      "kid": "010165dd706e0cdfc9f48600453266ea886c6f403e01db03cbd8271f280ab283151e0a",
+      "uid": "3e1a856f39534deface9aae98a24db19",
+      "username": "waltzing"
+    },
+    "merkle_root": {
+      "ctime": 1506461938,
+      "hash_meta": "164e38a966a235fa1dde2873f190d4507a45bccbb26491bb5d391a9d0acd72b7",
+      "seqno": 1461498
+    },
+    "revoke": {
+      "sig_ids": [
+        "5395a443d40cf2f0a34f63d569fbd3bb2ff0c6d390344076a1f3d36ba0913a3d0f"
+      ]
+    },
+    "service": {
+      "hostname": "walt.online",
+      "protocol": "http:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1506461945,
+  "expire_in": 157680000,
+  "prev": "aee16db0341e766bcd90db3f8635a1175009bec76240a2f89f244b3dd8839e9e",
+  "seqno": 34,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.74
+Comment: https://keybase.io/crypto
+
+yMK7AnicrVNtaBxFGL6kX2m0tiCK5ucKBWloZnY+duY0CrFVgqXVUtG0kevMzkxu
+yWX33N27ttYgNW2siDaopbHRlihSih+JttJITeylImJArRQr/aVUkIq1xWoxUomz
+h6KIP50/w8w87/M+zzMzHy6Zl2tuaN9ZoxeOLTrWMDOdVnJdn3w8u92Rkdrm5Lc7
+vbo+6ZLSSVroDZSTdwAEkBKlPEA18JXxucGMAoAJcinVgjHqU4MB0gAqCZAvFXM9
+aFwGhHQZggRqIJxWxwRhj47LcRCmlhZLQzzfYCq0NoxIASUmWkLlcpcwz/M1Icqj
+0BYWoySrsOKkSPTKILJ7dlGoy/sP/P+su1KnQxoKRqhBnCCstBG+5kJozoSLlYQ8
+AyY6DkWftugtopQ+av06/a1On457S7oQR1GaheunQQaBBFBMIUfMGhRJsdCnU2Er
+IcUaMcEpFS4iRkCltMs8ZCAHChPgCUyk70vpUsyhlEQhDgVXQPjKc6VndST6kTCy
+HSw95swqiHU16tVZ8yTosbElTn6TQ6wTgTFSGPjGNUAgbChShHIjFbL8xgCfWnaA
+MAYeFdAghagUgEMkkALGebg/axZXA79Ont3TP/yvjMJSEGorqBxHaeRHJXtQTNNy
+Pksl3VauA7Us/ElRkEGossxanaqOkyAKrQeL/FdgmLQ6ems5iHUhyBDEowzYkbXR
+VUtpHxSk2Y1iqD1Kpa9schIZRhEREHoEAC6171EXA+Eaxo2LsURKMYa45vrvBBG2
+OkWP5bS5hSKtxNrpnz7RPT/X0JxbuKAx+zy55sXL/vpS44NNudGxjzqWvDl3viU8
+eV1ty12bX5r45WTnzOCR7rNnn1+94jU5surxly8Ub+s4cm7s6aVnxGfvrrt9w+i8
+tcl9x388OvViZeTw7sL0mq+bJn93zOmRrVfO7Pzi2/ML7hbPXK4M7nKvLa0/VPpp
+uP30p0PtU11z6354O2z+Zo+65dLNn4+eUk/e+c6NEzcc2PXsvpaZ+QPdV/aMscPd
+0bk7aos7v28z76/ouDh56OdL9+wYf2H9q5uLvz5UXd0y0bbmrUWnBpa/Xtt7tbPt
+xP7jr2y6OFAxq/aL9+598AH81eWnhj/oOtj4RI3O6Wt+u/+xofGm747e9Nz1k/kv
+N1490LD7jcZ9szuGli2fnR2eWkv2Ltxw6x/hEok1
+=U0q5
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/waltzing
+
+==================================================================
